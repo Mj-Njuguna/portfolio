@@ -15,10 +15,39 @@
   --text: #e8e6df;
   --text-muted: #6b6960;
   --text-dim: #3d3c38;
+  --nav-text: #c8f06a;
+  --nav-text-muted: #a4ca5d;
   --accent: #c8f06a;
   --accent-dim: rgba(200, 240, 106, 0.08);
   --border: rgba(255, 255, 255, 0.07);
   --border-hover: rgba(255, 255, 255, 0.15);
+  --nav-bg: rgba(10, 10, 9, 0.85);
+  --nav-bg-scrolled: rgba(10, 10, 9, 0.95);
+  --theme-toggle-bg: var(--accent);
+  --theme-toggle-overlay: var(--bg);
+  --theme-toggle-border: rgba(255, 255, 255, 0.12);
+  --menu-btn-bg: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme='light'] {
+  --bg: #f8f8f3;
+  --bg-card: #ffffff;
+  --bg-hover: #f0f0ec;
+  --text: #11110f;
+  --text-muted: #5c5c52;
+  --text-dim: #7a7a70;
+  --nav-text: #5dbd49;
+  --nav-text-muted: #6aa85e;
+  --accent: #5dbd49;
+  --accent-dim: rgba(93, 189, 73, 0.14);
+  --border: rgba(17, 17, 17, 0.08);
+  --border-hover: rgba(17, 17, 17, 0.18);
+  --nav-bg: rgba(248, 248, 243, 0.88);
+  --nav-bg-scrolled: rgba(248, 248, 243, 0.95);
+  --theme-toggle-bg: #11110f;
+  --theme-toggle-overlay: var(--accent);
+  --theme-toggle-border: rgba(17, 17, 17, 0.12);
+  --menu-btn-bg: rgba(0, 0, 0, 0.08);
 }
 
 html { scroll-behavior: smooth; }

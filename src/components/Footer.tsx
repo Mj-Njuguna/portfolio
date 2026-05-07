@@ -2,7 +2,7 @@ const links = [
   { label: 'GitHub', href: '#' },
   { label: 'LinkedIn', href: '#' },
   { label: 'Twitter', href: '#' },
-  { label: 'Resume', href: '#' },
+ 
 ];
 
 export default function Footer() {
