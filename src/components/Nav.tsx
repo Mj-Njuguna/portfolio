@@ -39,7 +39,16 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  const toggleTheme = () => {
+    const button = document.querySelector('[data-theme-button]') as HTMLElement;
+    if (button) {
+      button.style.animation = 'none';
+      setTimeout(() => {
+        button.style.animation = 'spin-smooth 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+      }, 10);
+    }
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   const scrollTo = (id: string) => {
     if (isHome) {
@@ -76,34 +85,72 @@ export default function Nav() {
           <button
             type="button"
             onClick={toggleTheme}
-            className="relative flex h-7 w-7 items-center justify-center"
+            data-theme-button
+            className="relative flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300"
+            style={{
+              boxShadow: theme === 'dark' 
+                ? '0 0 20px rgba(200, 240, 106, 0.3)' 
+                : '0 0 20px rgba(93, 189, 73, 0.25)',
+              border: '1.5px solid var(--border)',
+            }}
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             onMouseEnter={(e) => {
-              const overlay = e.currentTarget.querySelector('[data-theme-overlay]') as HTMLElement;
-              if (overlay) overlay.style.opacity = '1';
+              const button = e.currentTarget as HTMLElement;
+              button.style.boxShadow = theme === 'dark'
+                ? '0 0 30px rgba(200, 240, 106, 0.5)'
+                : '0 0 30px rgba(93, 189, 73, 0.4)';
             }}
             onMouseLeave={(e) => {
-              const overlay = e.currentTarget.querySelector('[data-theme-overlay]') as HTMLElement;
-              if (overlay) overlay.style.opacity = '0';
+              const button = e.currentTarget as HTMLElement;
+              button.style.boxShadow = theme === 'dark'
+                ? '0 0 20px rgba(200, 240, 106, 0.3)'
+                : '0 0 20px rgba(93, 189, 73, 0.25)';
             }}
           >
             {/* Base circle */}
             <div
-              className="absolute inset-0 rounded-full"
-              style={{ background: 'var(--theme-toggle-bg)' }}
-            />
-            {/* Crescent overlay - hidden by default, shows on hover */}
-            <div
-              data-theme-overlay
-              className="absolute transition-opacity duration-300"
-              style={{
-                inset: 0,
-                opacity: 0,
-                background: 'var(--nav-bg)',
-                borderRadius: '50%',
-                clipPath: 'polygon(70% 0%, 100% 0%, 100% 100%, 70% 100%, 55% 85%, 55% 15%)',
+              className="absolute inset-0 rounded-full transition-all duration-500"
+              style={{ 
+                background: 'var(--theme-toggle-bg)',
               }}
             />
+            
+            {/* Icon indicator - Sun for light, Moon for dark */}
+            <svg
+              className="absolute w-4 h-4 transition-all duration-500"
+              style={{
+                opacity: theme === 'dark' ? 1 : 0,
+                transform: theme === 'dark' ? 'rotate(0deg) scale(1)' : 'rotate(-90deg) scale(0)',
+              }}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+
+            {/* Moon icon for light mode */}
+            <svg
+              className="absolute w-4 h-4 transition-all duration-500"
+              style={{
+                opacity: theme === 'light' ? 1 : 0,
+                transform: theme === 'light' ? 'rotate(0deg) scale(1)' : 'rotate(90deg) scale(0)',
+                color: 'var(--bg)',
+              }}
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
           </button>
 
           <button

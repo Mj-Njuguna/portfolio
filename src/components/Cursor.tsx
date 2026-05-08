@@ -26,12 +26,12 @@ export default function Cursor() {
     };
 
     const onEnter = () => {
-      gsap.to(dot, { scale: 2.5, backgroundColor: 'transparent', border: '1px solid #c8f06a', duration: 0.2 });
+      gsap.to(dot, { scale: 2.5, backgroundColor: 'transparent', border: '1px solid var(--accent)', duration: 0.2 });
       gsap.to(ringEl, { scale: 1.5, opacity: 0.6, duration: 0.25 });
     };
 
     const onLeave = () => {
-      gsap.to(dot, { scale: 1, backgroundColor: '#c8f06a', border: 'none', duration: 0.2 });
+      gsap.to(dot, { scale: 1, backgroundColor: 'var(--accent)', border: 'none', duration: 0.2 });
       gsap.to(ringEl, { scale: 1, opacity: 1, duration: 0.25 });
     };
 
@@ -67,12 +67,12 @@ export default function Cursor() {
       <div
         ref={dotRef}
         className="fixed pointer-events-none z-[9999] w-2 h-2 rounded-full -translate-x-1/2 -translate-y-1/2"
-        style={{ backgroundColor: '#c8f06a', willChange: 'transform' }}
+        style={{ backgroundColor: 'var(--accent)', willChange: 'transform' }}
       />
       <div
         ref={ringRef}
         className="fixed pointer-events-none z-[9998] w-8 h-8 rounded-full -translate-x-1/2 -translate-y-1/2"
-        style={{ border: '1px solid rgba(200,240,106,0.4)', willChange: 'transform' }}
+        style={{ border: '1px solid var(--accent-dim)', willChange: 'transform' }}
       />
     </>
   );
