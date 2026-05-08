@@ -10,23 +10,38 @@
 
 :root {
   --bg: #0a0a09;
-  --bg-card: #111110;
-  --bg-hover: #181816;
-  --text: #e8e6df;
-  --text-muted: #6b6960;
-  --text-dim: #3d3c38;
-  --nav-text: #c8f06a;
-  --nav-text-muted: #a4ca5d;
+  --bg-card: #141414;
+  --bg-hover: #1a1a1a;
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.72);
+  --text-dim: rgba(255, 255, 255, 0.56);
+  --nav-text: #ffffff;
+  --nav-text-muted: rgba(255, 255, 255, 0.72);
   --accent: #c8f06a;
-  --accent-dim: rgba(200, 240, 106, 0.08);
-  --border: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(255, 255, 255, 0.15);
-  --nav-bg: rgba(10, 10, 9, 0.85);
-  --nav-bg-scrolled: rgba(10, 10, 9, 0.95);
-  --theme-toggle-bg: var(--accent);
+  --accent-dim: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
+  --nav-bg: rgba(10, 10, 9, 0.95);
+  --nav-bg-scrolled: rgba(10, 10, 9, 1);
+  --menu-panel-bg: #ffffff;
+  --menu-panel-text: #11110f;
+  --menu-panel-text-muted: rgba(17, 17, 17, 0.6);
+  --menu-panel-icon: #11110f;
+  --menu-panel-active-text: #ffffff;
+  --menu-panel-active-dot: #ffffff;
+  --theme-toggle-bg: #ffffff;
+  --theme-toggle-icon: #11110f;
+  --menu-toggle-bg: #ffffff;
+  --menu-toggle-line: #11110f;
   --theme-toggle-overlay: var(--bg);
   --theme-toggle-border: rgba(255, 255, 255, 0.12);
-  --menu-btn-bg: rgba(255, 255, 255, 0.04);
+  --menu-btn-bg: rgba(255, 255, 255, 0.05);
+  --button-bg: #ffffff;
+  --button-bg-hover: rgba(255, 255, 255, 0.92);
+  --button-text: #0a0a09;
+  --button-border: rgba(255,255,255,0.12);
+  --selection-bg: rgba(255,255,255,0.16);
+  --selection-color: var(--bg);
 }
 
 [data-theme='light'] {
@@ -34,20 +49,35 @@
   --bg-card: #ffffff;
   --bg-hover: #f0f0ec;
   --text: #11110f;
-  --text-muted: #5c5c52;
-  --text-dim: #7a7a70;
-  --nav-text: #5dbd49;
-  --nav-text-muted: #6aa85e;
-  --accent: #5dbd49;
-  --accent-dim: rgba(93, 189, 73, 0.14);
+  --text-muted: rgba(0, 0, 0, 0.72);
+  --text-dim: rgba(0, 0, 0, 0.56);
+  --nav-text: #11110f;
+  --nav-text-muted: rgba(0, 0, 0, 0.6);
+  --accent: #c8f06a;
+  --accent-dim: rgba(0, 0, 0, 0.06);
   --border: rgba(17, 17, 17, 0.08);
   --border-hover: rgba(17, 17, 17, 0.18);
-  --nav-bg: rgba(248, 248, 243, 0.88);
-  --nav-bg-scrolled: rgba(248, 248, 243, 0.95);
+  --nav-bg: rgba(248, 248, 243, 0.95);
+  --nav-bg-scrolled: rgba(248, 248, 243, 1);
+  --menu-panel-bg: #11110f;
+  --menu-panel-text: #ffffff;
+  --menu-panel-text-muted: rgba(255, 255, 255, 0.72);
+  --menu-panel-icon: #11110f;
+  --menu-panel-active-text: #11110f;
+  --menu-panel-active-dot: #11110f;
   --theme-toggle-bg: #11110f;
-  --theme-toggle-overlay: var(--accent);
+  --theme-toggle-icon: #ffffff;
+  --menu-toggle-bg: #11110f;
+  --menu-toggle-line: #ffffff;
+  --theme-toggle-overlay: #11110f;
   --theme-toggle-border: rgba(17, 17, 17, 0.12);
   --menu-btn-bg: rgba(0, 0, 0, 0.08);
+  --button-bg: #11110f;
+  --button-bg-hover: rgba(17, 17, 15, 0.92);
+  --button-text: #ffffff;
+  --button-border: rgba(0,0,0,0.12);
+  --selection-bg: rgba(0,0,0,0.08);
+  --selection-color: var(--bg);
 }
 
 html { scroll-behavior: smooth; }
@@ -70,7 +100,7 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 2px; }
 
-::selection { background: var(--accent); color: var(--bg); }
+::selection { background: var(--selection-bg); color: var(--selection-color); }
 
 @keyframes spin-smooth {
   0% {

@@ -62,7 +62,7 @@ export default function Hero() {
           fontWeight: 300,
           letterSpacing: "0.12em",
           textTransform: "uppercase",
-          color: "var(--accent)",
+          color: "var(--text-muted)",
           opacity: 0,
         }}
       >
@@ -71,7 +71,7 @@ export default function Hero() {
             display: "inline-block",
             width: "28px",
             height: "1px",
-            background: "var(--accent)",
+            background: "var(--border)",
             flexShrink: 0,
           }}
         />

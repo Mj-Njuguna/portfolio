@@ -3,12 +3,19 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 
 const menuItems = ['work', 'about', 'contact'];
+const socialLinks = [
+  { label: 'GitHub', href: '#' },
+  { label: 'LinkedIn', href: '#' },
+  { label: 'Twitter', href: '#' },
+];
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null);
+  const scrollCloseTimeout = useRef<number | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('work');
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === '/';
@@ -28,16 +35,67 @@ export default function Nav() {
   }, [theme]);
 
   useEffect(() => {
+    if (!menuOpen) return;
+
+    const closeMenuOnScroll = () => {
+      if (scrollCloseTimeout.current) {
+        window.clearTimeout(scrollCloseTimeout.current);
+      }
+      scrollCloseTimeout.current = window.setTimeout(() => {
+        setMenuOpen(false);
+        scrollCloseTimeout.current = null;
+      }, 200);
+    };
+
+    window.addEventListener('scroll', closeMenuOnScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', closeMenuOnScroll);
+      if (scrollCloseTimeout.current) {
+        window.clearTimeout(scrollCloseTimeout.current);
+        scrollCloseTimeout.current = null;
+      }
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
     gsap.fromTo(
       navRef.current,
       { y: -20, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.2 }
     );
 
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 40);
+
+      if (isHome) {
+        const sections = menuItems
+          .map(item => ({ id: item, element: document.getElementById(item) }))
+          .filter(section => section.element !== null);
+
+        const scrollAnchor = scrollY + window.innerHeight * 0.2;
+        let currentSection = sections.length > 0 ? sections[0].id : 'work';
+
+        for (const { id, element } of sections) {
+          if (!element) continue;
+          const rect = element.getBoundingClientRect();
+          const elementTop = scrollY + rect.top;
+
+          if (scrollAnchor >= elementTop) {
+            currentSection = id;
+          } else {
+            break;
+          }
+        }
+
+        setActiveSection(currentSection);
+      }
+    };
+
     window.addEventListener('scroll', onScroll);
+    onScroll(); // Initial check
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [isHome]);
 
   const toggleTheme = () => {
     const button = document.querySelector('[data-theme-button]') as HTMLElement;
@@ -73,6 +131,16 @@ export default function Nav() {
           transition: 'background 0.3s',
         }}
       >
+        <div
+          className="pointer-events-none absolute right-6 w-[260px] rounded-t-[28px] rounded-tr-[28px] transition-all duration-300"
+          style={{
+            top: '8px',
+            height: 'calc(100% - 8px)',
+            background: menuOpen ? 'var(--menu-panel-bg)' : 'transparent',
+            borderLeft: menuOpen ? '1px solid var(--border)' : 'none',
+            opacity: menuOpen ? 1 : 0,
+          }}
+        />
         <Link
           to="/"
           className="font-bold text-[13px] tracking-[0.08em] uppercase no-underline"
@@ -88,23 +156,18 @@ export default function Nav() {
             data-theme-button
             className="relative flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300"
             style={{
-              boxShadow: theme === 'dark' 
-                ? '0 0 20px rgba(200, 240, 106, 0.3)' 
-                : '0 0 20px rgba(93, 189, 73, 0.25)',
+              color: 'var(--theme-toggle-icon)',
+              boxShadow: '0 0 18px rgba(0, 0, 0, 0.16)',
               border: '1.5px solid var(--border)',
             }}
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             onMouseEnter={(e) => {
               const button = e.currentTarget as HTMLElement;
-              button.style.boxShadow = theme === 'dark'
-                ? '0 0 30px rgba(200, 240, 106, 0.5)'
-                : '0 0 30px rgba(93, 189, 73, 0.4)';
+              button.style.boxShadow = '0 0 26px rgba(0, 0, 0, 0.22)';
             }}
             onMouseLeave={(e) => {
               const button = e.currentTarget as HTMLElement;
-              button.style.boxShadow = theme === 'dark'
-                ? '0 0 20px rgba(200, 240, 106, 0.3)'
-                : '0 0 20px rgba(93, 189, 73, 0.25)';
+              button.style.boxShadow = '0 0 18px rgba(0, 0, 0, 0.16)';
             }}
           >
             {/* Base circle */}
@@ -144,7 +207,7 @@ export default function Nav() {
               style={{
                 opacity: theme === 'light' ? 1 : 0,
                 transform: theme === 'light' ? 'rotate(0deg) scale(1)' : 'rotate(90deg) scale(0)',
-                color: 'var(--bg)',
+                color: 'var(--theme-toggle-icon)',
               }}
               viewBox="0 0 24 24"
               fill="currentColor"
@@ -158,86 +221,160 @@ export default function Nav() {
             onClick={() => setMenuOpen(open => !open)}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            className="relative flex h-10 w-12 items-center justify-center rounded-md border"
-            style={{ borderColor: 'var(--border)', background: 'var(--menu-btn-bg)' }}
+            className="relative flex h-10 w-12 items-center justify-center rounded-lg border transition-all duration-300 hover:scale-105 active:scale-95"
+            style={{
+              borderColor: 'var(--border)',
+              background: menuOpen ? 'var(--bg-hover)' : 'var(--menu-btn-bg)',
+              boxShadow: menuOpen ? '0 0 20px rgba(0, 0, 0, 0.15)' : 'none',
+            }}
           >
             <span
-              className="block h-[2px] w-5 rounded-full bg-current transition-transform duration-300"
-              style={{ transform: menuOpen ? 'translateY(4px) rotate(45deg)' : 'none' }}
+              className="block h-[2px] w-5 rounded-full bg-current transition-all duration-500 ease-out"
+              style={{
+                transform: menuOpen ? 'translateY(4px) rotate(45deg) scaleX(0.8)' : 'none',
+                transformOrigin: 'center',
+              }}
             />
             <span
-              className="absolute block h-[2px] rounded-full bg-current transition-all duration-300"
+              className="absolute block h-[2px] rounded-full bg-current transition-all duration-500 ease-out"
               style={{
-                width: '14px',
+                width: menuOpen ? '0px' : '14px',
                 transform: menuOpen ? 'translateX(-6px) translateY(0px)' : 'translateY(0px)',
                 opacity: menuOpen ? 0 : 1,
               }}
             />
             <span
-              className="block h-[2px] w-5 rounded-full bg-current transition-transform duration-300"
-              style={{ transform: menuOpen ? 'translateY(-4px) rotate(-45deg)' : 'none' }}
+              className="block h-[2px] w-5 rounded-full bg-current transition-all duration-500 ease-out"
+              style={{
+                transform: menuOpen ? 'translateY(-4px) rotate(-45deg) scaleX(0.8)' : 'none',
+                transformOrigin: 'center',
+              }}
             />
           </button>
         </div>
       </nav>
 
       <div
-        className={`fixed top-[5.5rem] right-6 z-[90] w-[240px] rounded-3xl p-5 shadow-[0_30px_90px_rgba(0,0,0,0.12)] backdrop-blur-2xl transition-all duration-300 ${
-          menuOpen ? 'visible opacity-100 scale-100' : 'invisible opacity-0 scale-95'
+        className={`fixed top-0 right-6 z-[90] w-[260px] rounded-[28px] p-5 pt-[5.5rem] shadow-[0_30px_80px_rgba(0,0,0,0.12)] backdrop-blur-2xl transition-all duration-450 ease-out ${
+          menuOpen ? 'visible opacity-100 scale-100 translate-y-0' : 'invisible opacity-0 scale-95 -translate-y-4'
         }`}
         style={{
           border: '1px solid var(--border)',
-          background: 'var(--bg-card)',
-          color: 'var(--nav-text)',
+          background: 'var(--menu-panel-bg)',
+          color: 'var(--menu-panel-text)',
+          transformOrigin: 'top right',
+          maxHeight: 'calc(100vh - 5.5rem)',
+          overflowY: 'auto',
         }}
       >
         <div
-          style={{
-            height: '2px',
-            width: '3rem',
-            marginBottom: '1rem',
-            background: 'var(--accent)',
-            borderRadius: '999px',
-          }}
-        />
-        <ul className="flex flex-col gap-4 list-none">
-          {menuItems.map(item => (
-            <li key={item}>
+          className="mb-4 h-[2px] overflow-hidden rounded-full"
+          style={{ background: 'var(--border)' }}
+        >
+          <div
+            className="h-full rounded-full transition-all duration-500"
+            style={{
+              width: menuOpen ? '100%' : '0%',
+              background: 'var(--border-hover)',
+            }}
+          />
+        </div>
+
+        <nav className="space-y-2">
+          {menuItems.map((item) => {
+            const isActive = activeSection === item;
+            return (
               <button
+                key={item}
                 type="button"
                 onClick={() => {
                   setMenuOpen(false);
                   scrollTo(item);
                 }}
-                className="w-full rounded-xl px-4 py-3 text-left text-[14px] font-semibold uppercase tracking-[0.12em] transition-all duration-200"
+                className="relative w-full rounded-2xl px-4 py-3 text-left text-[14px] uppercase tracking-[0.12em] transition-all duration-300"
                 style={{
                   fontFamily: 'Syne, sans-serif',
-                  color: 'var(--nav-text-muted)',
-                  background: 'rgba(0,0,0,0)',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.color = 'var(--accent)';
-                  e.currentTarget.style.background = 'var(--accent-dim)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.color = 'var(--nav-text-muted)';
-                  e.currentTarget.style.background = 'transparent';
+                  color: isActive ? 'var(--menu-panel-active-text)' : 'var(--menu-panel-text-muted)',
+                  background: isActive ? 'var(--bg-hover)' : 'transparent',
+                  opacity: isActive ? 1 : 0.92,
+                  border: isActive ? '1px solid var(--border)' : '1px solid transparent',
                 }}
               >
-                {item}
+                <div className="flex items-center justify-between gap-3">
+                  <span>{item}</span>
+                  {isActive && (
+                    <span
+                      className="block h-2 w-2 rounded-full"
+                      style={{ background: 'var(--menu-panel-active-dot)' }}
+                    />
+                  )}
+                </div>
               </button>
-            </li>
-          ))}
-        </ul>
+            );
+          })}
+        </nav>
+
+        <div className="mt-6 border-t pt-4 text-sm pl-4" style={{ borderColor: 'var(--border)' }}>
+          <div
+            style={{
+              fontFamily: 'DM Mono, monospace',
+              fontSize: '10px',
+              fontWeight: 300,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--menu-panel-text-muted)',
+              marginBottom: '0.75rem',
+            }}
+          >
+            Socials
+          </div>
+          <div className="space-y-2">
+            {socialLinks.map(link => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="block no-underline transition-colors duration-200"
+                style={{
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '12px',
+                  fontWeight: 300,
+                  letterSpacing: '0.12em',
+                  color: 'var(--menu-panel-text-muted)',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.color = 'var(--menu-panel-text)';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.color = 'var(--menu-panel-text-muted)';
+                }}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
 
       <a
         href="mailto:alex@example.com"
-        className="fixed left-6 bottom-6 z-[100] rounded-sm px-[1.1rem] py-3 text-[13px] font-semibold uppercase tracking-[0.04em] no-underline transition-colors duration-200 hover:bg-[rgba(200,240,106,0.15)]"
+        className="fixed left-6 bottom-6 z-[100] rounded-full px-6 py-3 text-[13px] font-bold uppercase tracking-[0.08em] no-underline transition-all duration-300 hover:shadow-lg"
         style={{
           fontFamily: 'Syne, sans-serif',
-          color: 'var(--bg)',
-          background: 'var(--accent)',
+          color: 'var(--button-text)',
+          background: 'var(--button-bg)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.18)',
+          border: '1px solid var(--button-border)',
+          letterSpacing: '0.08em',
+        }}
+        onMouseEnter={(e) => {
+          const target = e.currentTarget as HTMLElement;
+          target.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.24)';
+          target.style.background = 'var(--button-bg-hover)';
+        }}
+        onMouseLeave={(e) => {
+          const target = e.currentTarget as HTMLElement;
+          target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.18)';
+          target.style.background = 'var(--button-bg)';
         }}
       >
         Hire me

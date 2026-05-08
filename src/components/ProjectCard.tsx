@@ -107,9 +107,9 @@ export default function ProjectCard({ project }: Props) {
               width: 'clamp(3.5rem, 5vw, 5rem)',
               height: 'clamp(3.5rem, 5vw, 5rem)',
               borderRadius: '8px',
-              background: 'var(--accent-dim)',
-              border: '1px solid rgba(200,240,106,0.15)',
-              color: 'var(--accent)',
+              background: 'var(--bg-hover)',
+              border: '1px solid var(--border)',
+              color: 'var(--text)',
             }}
           >
             <Icon size={32} strokeWidth={1.5} />
@@ -126,8 +126,6 @@ export default function ProjectCard({ project }: Props) {
               color: 'var(--text)',
               transition: 'color 0.2s',
             }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--text)')}
           >
             {project.name}
           </h2>
@@ -155,9 +153,9 @@ export default function ProjectCard({ project }: Props) {
                     fontSize: '10px',
                     fontWeight: 400,
                     letterSpacing: '0.06em',
-                    color: 'var(--accent)',
-                    background: 'var(--accent-dim)',
-                    border: '1px solid rgba(200,240,106,0.2)',
+                    color: 'var(--text-muted)',
+                    background: 'var(--bg-hover)',
+                    border: '1px solid var(--border)',
                     padding: '0.25rem 0.6rem',
                     borderRadius: '2px',
                   }}
@@ -174,8 +172,8 @@ export default function ProjectCard({ project }: Props) {
         ref={arrowRef}
         className="absolute bottom-10 right-10 w-10 h-10 rounded-full flex items-center justify-center"
         style={{
-          border: '1px solid var(--accent)',
-          color: 'var(--accent)',
+          border: '1px solid var(--border)',
+          color: 'var(--text-muted)',
           fontSize: '14px',
           opacity: 0,
           transform: 'translateY(4px)',

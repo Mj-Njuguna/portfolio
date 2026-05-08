@@ -77,7 +77,7 @@ export default function ProjectPage() {
           <Link
             to="/"
             className="inline-flex items-center gap-2 mt-8 no-underline"
-            style={{ fontFamily: 'Syne, sans-serif', fontWeight: 600, fontSize: '14px', color: 'var(--accent)', letterSpacing: '0.03em' }}
+            style={{ fontFamily: 'Syne, sans-serif', fontWeight: 600, fontSize: '14px', color: 'var(--text)', letterSpacing: '0.03em' }}
           >
             <ArrowLeft size={16} /> Back to portfolio
           </Link>
@@ -104,7 +104,7 @@ export default function ProjectPage() {
             color: 'var(--text-muted)',
             textTransform: 'uppercase',
           }}
-          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')}
+          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
           onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text-muted)')}
         >
           <ArrowLeft size={14} /> Back to portfolio
@@ -123,9 +123,9 @@ export default function ProjectPage() {
                   width: 'clamp(3.5rem, 5vw, 5rem)',
                   height: 'clamp(3.5rem, 5vw, 5rem)',
                   borderRadius: '8px',
-                  background: 'var(--accent-dim)',
-                  border: '1px solid rgba(200,240,106,0.15)',
-                  color: 'var(--accent)',
+                  background: 'var(--bg-hover)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text)',
                 }}
               >
                 <Icon size={32} strokeWidth={1.5} />
@@ -210,9 +210,9 @@ export default function ProjectPage() {
                   fontSize: '10px',
                   fontWeight: 400,
                   letterSpacing: '0.06em',
-                  color: 'var(--accent)',
-                  background: 'var(--accent-dim)',
-                  border: '1px solid rgba(200,240,106,0.2)',
+                  color: 'var(--text-muted)',
+                  background: 'var(--bg-hover)',
+                  border: '1px solid var(--border)',
                   padding: '0.25rem 0.6rem',
                   borderRadius: '2px',
                 }}
@@ -241,7 +241,7 @@ export default function ProjectPage() {
                 fontWeight: 300,
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
-                color: 'var(--accent)',
+                color: 'var(--text-dim)',
                 marginBottom: '1.5rem',
               }}
             >
@@ -269,7 +269,7 @@ export default function ProjectPage() {
                 fontWeight: 300,
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
-                color: 'var(--accent)',
+                color: 'var(--text-dim)',
                 marginBottom: '1.5rem',
               }}
             >
@@ -297,7 +297,7 @@ export default function ProjectPage() {
                 fontWeight: 300,
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
-                color: 'var(--accent)',
+                color: 'var(--text-dim)',
                 marginBottom: '1.5rem',
               }}
             >
@@ -325,7 +325,7 @@ export default function ProjectPage() {
                 fontWeight: 300,
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
-                color: 'var(--accent)',
+                color: 'var(--text-dim)',
                 marginBottom: '1.5rem',
               }}
             >
@@ -381,7 +381,7 @@ export default function ProjectPage() {
                       width: '6px',
                       height: '6px',
                       borderRadius: '50%',
-                      background: 'var(--accent)',
+                      background: 'var(--text-muted)',
                       display: 'inline-block',
                     }}
                   />
@@ -450,8 +450,8 @@ export default function ProjectPage() {
               paddingBottom: '0.25rem',
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.color = 'var(--accent)';
-              (e.currentTarget as HTMLElement).style.borderBottomColor = 'var(--accent)';
+              (e.currentTarget as HTMLElement).style.color = 'var(--text)';
+              (e.currentTarget as HTMLElement).style.borderBottomColor = 'var(--text)';
             }}
             onMouseLeave={e => {
               (e.currentTarget as HTMLElement).style.color = 'var(--text)';
@@ -472,7 +472,7 @@ export default function ProjectPage() {
                   fontFamily: 'Syne, sans-serif',
                   fontWeight: 700,
                   fontSize: '14px',
-                  color: 'var(--accent)',
+                  color: 'var(--text)',
                   letterSpacing: '0.03em',
                 }}
               >

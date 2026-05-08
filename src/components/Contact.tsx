@@ -48,7 +48,7 @@ export default function Contact() {
           fontWeight: 300,
           letterSpacing: '0.15em',
           textTransform: 'uppercase',
-          color: 'var(--accent)',
+          color: 'var(--text-muted)',
           marginBottom: '2rem',
           opacity: 0,
         }}
@@ -76,17 +76,27 @@ export default function Contact() {
       <a
         ref={ctaRef}
         href="mailto:alex@example.com"
-        className="inline-flex items-center gap-4 no-underline transition-opacity duration-200 hover:opacity-85"
+        className="inline-flex items-center gap-4 no-underline rounded-full px-8 py-4 font-bold uppercase tracking-[0.08em] transition-all duration-300 hover:shadow-lg"
         style={{
           fontFamily: 'Syne, sans-serif',
-          fontWeight: 700,
           fontSize: '14px',
-          letterSpacing: '0.06em',
+          letterSpacing: '0.08em',
           textTransform: 'uppercase',
-          color: 'var(--bg)',
-          background: 'var(--accent)',
-          padding: '1rem 2rem',
+          color: 'var(--button-text)',
+          background: 'var(--button-bg)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+          border: '1px solid var(--button-border)',
           opacity: 0,
+        }}
+        onMouseEnter={(e) => {
+          const target = e.currentTarget as HTMLElement;
+          target.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.22)';
+          target.style.background = 'var(--button-bg-hover)';
+        }}
+        onMouseLeave={(e) => {
+          const target = e.currentTarget as HTMLElement;
+          target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+          target.style.background = 'var(--button-bg)';
         }}
       >
         Send me an email →

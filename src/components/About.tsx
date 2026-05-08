@@ -84,7 +84,7 @@ export default function About() {
             opacity: 0,
           }}
         >
-          I'm Alex — a full-stack software developer based in Nairobi, Kenya. I build web applications, developer tools, and APIs that are fast, maintainable, and built to scale.
+          I'm Njuguna — a full-stack software developer based in Nairobi, Kenya. I build web applications, developer tools, and APIs that are fast, maintainable, and built to scale.
           <br /><br />
           I care deeply about developer experience, clean architecture, and shipping products people actually love to use. Whether it's a greenfield SaaS, a critical backend migration, or an open-source tool — I'm at my best when solving hard problems with elegant code.
           <br /><br />
@@ -103,8 +103,8 @@ export default function About() {
             borderBottom: '1px solid var(--border)',
           }}
           onMouseEnter={e => {
-            (e.currentTarget as HTMLElement).style.color = 'var(--accent)';
-            (e.currentTarget as HTMLElement).style.borderBottomColor = 'var(--accent)';
+            (e.currentTarget as HTMLElement).style.color = 'var(--text)';
+            (e.currentTarget as HTMLElement).style.borderBottomColor = 'var(--text)';
           }}
           onMouseLeave={e => {
             (e.currentTarget as HTMLElement).style.color = 'var(--text)';
