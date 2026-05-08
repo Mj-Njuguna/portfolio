@@ -12,6 +12,7 @@ const socialLinks = [
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null);
   const scrollCloseTimeout = useRef<number | null>(null);
+  const pendingScrollTarget = useRef<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [menuOpen, setMenuOpen] = useState(false);
@@ -108,14 +109,21 @@ export default function Nav() {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  useEffect(() => {
+    if (isHome && pendingScrollTarget.current) {
+      document.getElementById(pendingScrollTarget.current)?.scrollIntoView({ behavior: 'smooth' });
+      pendingScrollTarget.current = null;
+    }
+  }, [isHome]);
+
   const scrollTo = (id: string) => {
     if (isHome) {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 
+    pendingScrollTarget.current = id;
     navigate('/');
-    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 150);
   };
 
   return (
@@ -280,7 +288,7 @@ export default function Nav() {
           />
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-1">
           {menuItems.map((item) => {
             const isActive = activeSection === item;
             return (
@@ -291,7 +299,7 @@ export default function Nav() {
                   setMenuOpen(false);
                   scrollTo(item);
                 }}
-                className="relative w-full rounded-2xl px-4 py-3 text-left text-[14px] uppercase tracking-[0.12em] transition-all duration-300"
+                className="relative w-full rounded-2xl px-4 py-2 text-left text-[14px] uppercase tracking-[0.12em] transition-all duration-300"
                 style={{
                   fontFamily: 'Syne, sans-serif',
                   color: isActive ? 'var(--menu-panel-active-text)' : 'var(--menu-panel-text-muted)',
@@ -314,21 +322,30 @@ export default function Nav() {
           })}
         </nav>
 
-        <div className="mt-6 border-t pt-4 text-sm pl-4" style={{ borderColor: 'var(--border)' }}>
+        <div className="mt-1 pt-1 pl-4">
+          {/* iOS-style fade divider */}
+          <div
+            className="mb-3"
+            style={{
+              height: '1px',
+              background: 'linear-gradient(to right, transparent, var(--menu-panel-text) 30%, var(--menu-panel-text) 70%, transparent)',
+              opacity: 0.12,
+            }}
+          />
           <div
             style={{
               fontFamily: 'DM Mono, monospace',
               fontSize: '10px',
-              fontWeight: 300,
+              fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
-              color: 'var(--menu-panel-text-muted)',
-              marginBottom: '0.75rem',
+              color: 'var(--menu-panel-text)',
+              marginBottom: '0.5rem',
             }}
           >
             Socials
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1">
             {socialLinks.map(link => (
               <a
                 key={link.label}
@@ -356,7 +373,7 @@ export default function Nav() {
       </div>
 
       <a
-        href="mailto:alex@example.com"
+        href="mailto:ahello@njuguna.com"
         className="fixed left-6 bottom-6 z-[100] rounded-full px-6 py-3 text-[13px] font-bold uppercase tracking-[0.08em] no-underline transition-all duration-300 hover:shadow-lg"
         style={{
           fontFamily: 'Syne, sans-serif',
