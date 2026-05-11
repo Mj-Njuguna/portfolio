@@ -11,25 +11,16 @@ const socialLinks = [
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null);
+  const themeButtonRef = useRef<HTMLButtonElement>(null);
   const scrollCloseTimeout = useRef<number | null>(null);
   const pendingScrollTarget = useRef<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>(()=>(document.documentElement.dataset.theme as 'dark' | 'light') ?? 'dark');
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('work');
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === '/';
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = savedTheme === 'light' ? 'light' : savedTheme === 'dark' ? 'dark' : prefersDark ? 'dark' : 'light';
-
-    setTheme(initialTheme);
-    document.documentElement.dataset.theme = initialTheme;
-  }, []);
-
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem('theme', theme);
@@ -99,7 +90,7 @@ export default function Nav() {
   }, [isHome]);
 
   const toggleTheme = () => {
-    const button = document.querySelector('[data-theme-button]') as HTMLElement;
+    const button = themeButtonRef.current;
     if (button) {
       button.style.animation = 'none';
       setTimeout(() => {
@@ -159,9 +150,9 @@ export default function Nav() {
 
         <div className="flex items-center gap-4">
           <button
+            ref = {themeButtonRef}
             type="button"
             onClick={toggleTheme}
-            data-theme-button
             className="relative flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300"
             style={{
               color: 'var(--theme-toggle-icon)',
